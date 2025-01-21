@@ -1,0 +1,122 @@
+
+<div class="container mt-3 mb-3">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <form>
+        <div class="mb-4 text-center">
+          <label for="profileInput">
+            <div
+              class="profile-picture border border-secondary rounded-circle d-flex justify-content-center align-items-center mx-auto"
+              id="profile-picture"
+              style="width: 120px; height: 120px; cursor: pointer; background-size: cover; background-position: center; position: relative;">
+              <!-- Icon is now centered -->
+              <i class="fa fa-user-plus text-secondary" id="icon" style="font-size: 4rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+              <img [src] class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>
+          </label>
+          <input type="file" id="profileInput" class="d-none" accept="image/*"/>
+          <div class="mt-2 text-secondary">Upload Profile Picture</div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="name" placeholder="Name">
+              <label for="name"> <i class="fa fa-user"></i> Name</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="fatherName" placeholder="Father Name">
+              <label for="fatherName"> <i class="fa fa-users"></i> Father Name</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+              <label for="lastName"> <i class="fa fa-tag"></i> Last Name</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="address" placeholder="1234 Main St">
+              <label for="address"> <i class="fa fa-home"></i> Address</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="address2" placeholder="Apartment, studio, or floor">
+              <label for="address2"> <i class="fa fa-building"></i> Address 2</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="landmark" placeholder="Landmark">
+              <label for="landmark"> <i class="fa fa-map-marker"></i> Landmark</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="city" placeholder="City">
+              <label for="city"> <i class="fa fa-city"></i> City</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <select id="state" class="form-select">
+                <option selected>Choose...</option>
+                <option>...</option>
+              </select>
+              <label for="state"> <i class="fa fa-flag"></i> State</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="zip" placeholder="Zip">
+              <label for="zip"> <i class="fa fa-mail-bulk"></i> Zip</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          
+          <div class="col-12 col-md-6 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="mobile" placeholder="Mobile">
+              <label for="mobile"> <i class="fa fa-phone"></i> Mobile</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="alternateNumber" placeholder="Alternate Number">
+              <label for="alternateNumber"> <i class="fa fa-phone-alt"></i> Alternate Number</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12 col-md-6 mb-3">
+            <div class="form-floating">
+              <input type="email" class="form-control" id="email" placeholder="Email">
+              <label for="email"> <i class="fa fa-envelope"></i> Email</label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 mb-3">
+            <div class="form-floating">
+              <input type="password" class="form-control" id="password" placeholder="Password">
+              <label for="password"> <i class="fa fa-lock"></i> Password</label>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">Sign In</button>
+      </form>
+    </div>
+  </div>
+</div>
