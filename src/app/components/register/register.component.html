@@ -2,38 +2,46 @@
 <div class="container mt-3 mb-3">
   <div class="card shadow-sm">
     <div class="card-body">
-      <form>
+      <form [formGroup]="registerPatientForm">
         <div class="mb-4 text-center">
           <label for="profileInput">
             <div
-              class="profile-picture border border-secondary rounded-circle d-flex justify-content-center align-items-center mx-auto"
-              id="profile-picture"
-              style="width: 120px; height: 120px; cursor: pointer; background-size: cover; background-position: center; position: relative;">
+            class="profile-picture border border-secondary rounded-circle"
+            [ngStyle]="{ 'background-image': 'url(' + profilephoto + ')' }"
+            style="width: 120px; height: 120px; background-size: cover; 
+            background-position: center; cursor: pointer;"
+          >
               <!-- Icon is now centered -->
-              <i class="fa fa-user-plus text-secondary" id="icon" style="font-size: 4rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+              <img 
+              *ngIf="!profilephoto" 
+              src="assets/upload.png" 
+              alt="Add Profile Photo" 
+              style="width: 70%; opacity: 0.7;"
+            />
+            <input type="file" id="profileInput" (change)="onProfilePictureChange($event)" class="d-none"formControlName="profilephoto" accept="image/*"/>
               <img [src] class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover;" />
             </div>
           </label>
-          <input type="file" id="profileInput" class="d-none" accept="image/*"/>
+          <input type="file" id="profileInput" formControlName="profilephoto" class="d-none" accept="image/*"/>
           <div class="mt-2 text-secondary">Upload Profile Picture</div>
         </div>
         <div class="row mb-3">
           <div class="col-12 col-md-4 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="name" placeholder="Name">
+              <input type="text" class="form-control" id="name"formControlName="firstName" placeholder="Name">
               <label for="name"> <i class="fa fa-user"></i> Name</label>
             </div>
           </div>
           <div class="col-12 col-md-4 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="fatherName" placeholder="Father Name">
-              <label for="fatherName"> <i class="fa fa-users"></i> Father Name</label>
+              <input type="text" class="form-control" id="fatherName" formControlName="fatherName" placeholder="Father Name">
+              <label for="fatherName"> <i class="fa fa-user"></i> Father Name</label>
             </div>
           </div>
           <div class="col-12 col-md-4 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="lastName" placeholder="Last Name">
-              <label for="lastName"> <i class="fa fa-tag"></i> Last Name</label>
+              <input type="text" class="form-control" id="lastName" formControlName="lastName" placeholder="Last Name">
+              <label for="lastName"> <i class="fa fa-user"></i> Last Name</label>
             </div>
           </div>
         </div>
@@ -41,60 +49,81 @@
         <div class="row mb-3">
           <div class="col-12 col-md-4 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="address" placeholder="1234 Main St">
+              <input type="text" class="form-control" id="address" formControlName="address" placeholder="1234 Main St">
               <label for="address"> <i class="fa fa-home"></i> Address</label>
             </div>
           </div>
           <div class="col-12 col-md-4 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="address2" placeholder="Apartment, studio, or floor">
-              <label for="address2"> <i class="fa fa-building"></i> Address 2</label>
+              <input type="text" class="form-control" id="address2" formControlName="address2" placeholder="Apartment, studio, or floor">
+              <label for="address2"> <i class="fa fa-home"></i> Address 2</label>
             </div>
           </div>
           <div class="col-12 col-md-4 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="landmark" placeholder="Landmark">
+              <input type="text" class="form-control" id="landmark" formControlName="landmark" placeholder="Landmark">
               <label for="landmark"> <i class="fa fa-map-marker"></i> Landmark</label>
             </div>
           </div>
         </div>
 
         <div class="row mb-3">
-          
-          <div class="col-12 col-md-4 mb-3">
+          <div class="col-12 col-md-3 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="city" placeholder="City">
-              <label for="city"> <i class="fa fa-city"></i> City</label>
+              
+              <!-- (change)="loadStates()" -->
+              <select id="country" class="form-select" [(ngModel)]="selectedCountry" formControlName="country" (change)="onCountryChange($event)">
+                <option selected>Choose Country...</option>
+                <option *ngFor="let country of countries" [value]="country.isoCode">
+                  {{ country.name }}
+                </option>
+              </select>
+              <label for="country"> <i class="fa fa-globe"></i> Country</label>
             </div>
           </div>
-          <div class="col-12 col-md-4 mb-3">
+          
+          <div class="col-12 col-md-3 mb-3">
             <div class="form-floating">
-              <select id="state" class="form-select">
-                <option selected>Choose...</option>
-                <option>...</option>
+              <select id="state" class="form-select" [(ngModel)]="selectedState" formControlName="state" (change)="onStateChange($event)">
+                <option selected>Choose State...</option>
+                <option *ngFor="let state of states" [value]="state.isoCode">
+                  {{ state.name }}
+                </option>
               </select>
               <label for="state"> <i class="fa fa-flag"></i> State</label>
             </div>
           </div>
-          <div class="col-12 col-md-4 mb-3">
+          
+          <div class="col-12 col-md-3 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="zip" placeholder="Zip">
+              <select id="city" class="form-select" [(ngModel)]="selectedCity" formControlName="city">
+                <option selected>Choose City...</option>
+                <option *ngFor="let city of cities">{{ city.name }}</option>
+              </select>
+              <label for="city"> <i class="fa fa-building"></i> City</label>
+            </div>
+          </div>
+          
+          <div class="col-12 col-md-3 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="zip" formControlName="zip" placeholder="Zip">
               <label for="zip"> <i class="fa fa-mail-bulk"></i> Zip</label>
             </div>
           </div>
         </div>
+          
+        
 
         <div class="row mb-3">
-          
           <div class="col-12 col-md-6 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="mobile" placeholder="Mobile">
+              <input type="text" class="form-control" id="mobile" formControlName="mobile" placeholder="Mobile">
               <label for="mobile"> <i class="fa fa-phone"></i> Mobile</label>
             </div>
           </div>
           <div class="col-12 col-md-6 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="alternateNumber" placeholder="Alternate Number">
+              <input type="text" class="form-control" id="alternateNumber" formControlName="alternateNumber" placeholder="Alternate Number">
               <label for="alternateNumber"> <i class="fa fa-phone-alt"></i> Alternate Number</label>
             </div>
           </div>
@@ -103,19 +132,19 @@
         <div class="row mb-3">
           <div class="col-12 col-md-6 mb-3">
             <div class="form-floating">
-              <input type="email" class="form-control" id="email" placeholder="Email">
+              <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email">
               <label for="email"> <i class="fa fa-envelope"></i> Email</label>
             </div>
           </div>
           <div class="col-12 col-md-6 mb-3">
             <div class="form-floating">
-              <input type="password" class="form-control" id="password" placeholder="Password">
+              <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password">
               <label for="password"> <i class="fa fa-lock"></i> Password</label>
             </div>
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">Sign In</button>
+        <button type="submit" class="btn btn-primary btn-lg w-100 mt-3" (click)="postRegister()">Sign In</button>
       </form>
     </div>
   </div>
