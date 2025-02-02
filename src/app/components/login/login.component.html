@@ -3,16 +3,17 @@
     <div class="card">
         <h2 class="text-center fw-bold text-primary mb-3">Log In</h2>
         <p class="text-center text-muted mb-4">Login with your data that you entered during your registration</p>
-        <form>
+        <form  [formGroup]="postLoginCustomerForm" id="login-form">  
             <div class="mb-3">
-                <input type="email" class="form-control form-control-lg" placeholder="Email Address" required>
+                <input type="email" class="form-control form-control-lg" formControlName="email" placeholder="Email Address" required name="email">
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control form-control-lg" placeholder="Password" required>
+                <input type="password" class="form-control form-control-lg"formControlName="password" placeholder="Password" required name="password">
             </div>
             <div class="d-grid mb-3">
-                <button type="submit" class="btn btn-primary btn-lg">Continue</button>
+                <button type="submit" class="btn btn-primary btn-lg" (click)="loginPatient()"> Continue</button>
             </div>
+
             <p class="text-center text-muted">By continuing, you agree to <a href="#" class="text-primary">Terms & Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a>.</p>
             <div class="text-center mt-3">
                 <p>Don't have an account? <a routerLink="patient" class="text-primary">Sign Up</a></p>

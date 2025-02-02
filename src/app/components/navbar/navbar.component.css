@@ -1,0 +1,48 @@
+.navbar-custom {
+    background-color: #0d1b2a; /* Dark blue */
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.navbar-custom .navbar-brand img {
+    width: 40px; /* Logo size */
+    animation: pulse 2s infinite; /* Pulsating effect */
+}
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+.navbar-custom .nav-link {
+    color: white;
+    font-size: 18px;
+    margin: 0 10px; /* Add spacing between links */
+    transition: all 0.3s ease;
+}
+.navbar-custom .nav-link:hover {
+    color: #00b5e2;
+    transform: translateY(-5px); /* Move link upwards on hover */
+}
+.navbar-custom .fa {
+    font-size: 20px;
+    color: white;
+    transition: all 0.3s ease;
+}
+.navbar-custom .fa:hover {
+    color: #00b5e2; /* Neon effect on hover */
+    text-shadow: 0 0 10px #00b5e2, 0 0 20px #00b5e2, 0 0 30px #00b5e2;
+    transform: rotate(360deg); /* Rotate icon on hover */
+}
+
+.navbar-toggler:hover, .navbar-toggler:focus {
+transform: scale(1.1); /* Slightly increases size on hover */
+box-shadow: 0 0 20px rgba(1, 1, 1, 1.2); /* Subtle shadow effect */
+transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition */
+}
+
+.navbar-toggler:focus, .navbar-toggler:active {
+outline: white; /* Removes default outline */
+border-radius: 80%;
+}
