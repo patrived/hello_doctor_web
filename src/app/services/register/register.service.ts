@@ -14,9 +14,10 @@ export class RegisterService {
   constructor(private httpcilent: HttpClient) { }
 
 
-  postRegister(patient:any): Observable <any>{ 
-     return this.httpcilent.post(this.BASE_URL+'registerPatient',patient);
+  postRegister(formData: any): Observable<any> { 
+     return this.httpcilent.post(this.BASE_URL+'registerPatient',formData);
   } 
+
 
   
 }

@@ -1,0 +1,38 @@
+/* body {
+    background-color: #f9f9f9;
+  } */
+  .sidebar {
+    background-color: #003f88;
+    color: white;
+    min-height: 100vh;
+  }
+  .sidebar a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .sidebar .active {
+    background-color: #007bff;
+    font-weight: bold;
+  }
+  .card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .card-icon {
+    font-size: 2rem;
+  }
+  .btn-action {
+    font-size: 1rem;
+    margin: 0 4px;
+  }
+  .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }

@@ -13,6 +13,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { DoctorAppointmentComponent } from './components/doctor-appointment/doctor-appointment.component';
 import { SuccessComponent } from './components/success/success.component';
 import{FailureComponent} from'./components/failure/failure.component'
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SpecializationComponent } from './components/specialization/specialization.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+
 
 @NgModule({
   declarations: [
@@ -23,6 +27,8 @@ import{FailureComponent} from'./components/failure/failure.component'
     DoctorAppointmentComponent,
     SuccessComponent,
     FailureComponent,
+    SpecializationComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +38,8 @@ import{FailureComponent} from'./components/failure/failure.component'
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatSnackBarModule
+  
   ],
   providers: [],
   bootstrap: [AppComponent]
