@@ -6,6 +6,8 @@ import { RegistrationresponseComponent } from './registrationresponse/registrati
 import { DoctorAppointmentComponent } from './components/doctor-appointment/doctor-appointment.component';
 import { SuccessComponent } from './components/success/success.component';
 import{FailureComponent} from'./components/failure/failure.component'
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { SpecializationComponent } from './components/specialization/specialization.component';
 const routes: Routes = [
   {
     path:'patient',component:RegisterComponent
@@ -28,7 +30,15 @@ const routes: Routes = [
 },
 {
   path:'failure',component:FailureComponent
+},
+{
+  path:'admin',component:AdminDashboardComponent
+},
+{
+  path:'specialization',component:SpecializationComponent
 }
+
+
 
 ];
 
