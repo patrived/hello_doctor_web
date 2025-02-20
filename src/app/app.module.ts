@@ -16,6 +16,7 @@ import{FailureComponent} from'./components/failure/failure.component'
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SpecializationComponent } from './components/specialization/specialization.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { VerifyotpComponent } from './components/verifyotp/verifyotp.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
     FailureComponent,
     SpecializationComponent,
     AdminDashboardComponent,
+    VerifyotpComponent,
   ],
   imports: [
     BrowserModule,
