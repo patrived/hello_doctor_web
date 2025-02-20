@@ -1,1 +1,38 @@
-<p>verifyotp works!</p>
+<div class="d-flex justify-content-center align-items-center vh-100">
+<div class="otp-card position-relative text-center">
+    <h2 class="otp-title">Enter OTP</h2>
+    <p class="text-muted">Enter the OTP sent to your registered email</p>
+
+    <form (submit)="verifyOtp()">
+        <div class="d-flex justify-content-center">
+            <input
+                *ngFor="let digit of otpInputs; let i = index"
+                type="text"
+                class="otp-input"
+                maxlength="1"
+                [attr.disabled]="i !== 0 && otp[i - 1] === '' ? true : null"
+                [(ngModel)]="otp[i]"
+                (input)="onInput(i, $event)"
+                (keydown)="onKeydown(i, $event)"
+                #otpInput
+                required
+                name="otp{{ i }}"
+            />
+        </div>
+
+        <div class="d-grid mt-2">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="!isOtpComplete()">Verify OTP</button>
+        </div>
+
+        <!-- Timer centered below Verify OTP button -->
+        <p id="timer" class="text-dark small fw-bold mt-2" *ngIf="timeLeft > 0">
+            Time left: {{ timeLeft }}s
+        </p>
+
+        <!-- Resend OTP link appears after timer expires -->
+        <p id="resend-otp" class="text-primary fw-bold mt-2" *ngIf="timeLeft === 0" (click)="resendOtp()">
+            Resend OTP
+        </p>
+    </form>
+</div>
+</div>
