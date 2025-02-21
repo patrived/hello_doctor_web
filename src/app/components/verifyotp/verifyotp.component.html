@@ -3,7 +3,7 @@
     <h2 class="otp-title">Enter OTP</h2>
     <p class="text-muted">Enter the OTP sent to your registered email</p>
 
-    <form (submit)="verifyOtp()">
+    <form [formGroup]="otpform" (submit)="verifyOtp()">
         <div class="d-flex justify-content-center">
             <input
                 *ngFor="let digit of otpInputs; let i = index"

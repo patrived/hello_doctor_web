@@ -1,4 +1,6 @@
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { CommonserviceService } from 'src/app/services/commonservice/commonservice.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -7,17 +9,26 @@ import Swal from 'sweetalert2';
   styleUrls: ['./verifyotp.component.css']
 })
 export class VerifyotpComponent {
-  otp: string[] = ['', '', '', ''];
-  timeLeft: number = 10;
-  otpInputs = new Array(6).fill('');
-  
   @ViewChildren('otpInput') otpElements!: QueryList<ElementRef>;
+  otp: string[] = ['', '', '', '','',''];
+  timeLeft: number = 10;
+  otpInputs = new Array(6).fill(''); 
+
+  otpform : FormBuilder|any;
+  constructor(private commonservice:CommonserviceService, private fb: FormBuilder){}
+ 
+
+ 
 
   ngOnInit() {
     this.startCountdown();
     setTimeout(() => this.otpElements.first?.nativeElement.focus(), 0);
   }
 
+// to check old mail from previous screen
+old_email: any | undefined = this.commonservice.getEmail();
+
+  //typescript function start//
   onInput(index: number, event: any) {
     if (event.data && event.data.match(/\d/)) {
       if (index < this.otp.length - 1) {
@@ -71,5 +82,6 @@ export class VerifyotpComponent {
   isOtpComplete(): boolean {
     return this.otp.every((digit) => digit !== '');
   }
+  //typescript function end//
 }
 
