@@ -21,9 +21,8 @@ export class CommonserviceService {
     getEmail(): string | null {
         return this.email;
     }
-  //end //
-
+ 
   getPatientbyEmail(email:any):Observable<any>{
-    return this.http.get(this.BASE_URL+"byEmail"+email);
+    return this.http.get(this.BASE_URL+"byEmail/"+email);
   }
 }

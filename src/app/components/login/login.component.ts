@@ -36,6 +36,9 @@ loginPatient() {
   this.LoginService.loginCustomer(this.postLoginCustomerForm.value).subscribe({
     next: (res: any) => {
       console.log("Login success:", res);
+      this.otp=true
+      const email =res.email
+      console.log('line 41 res email',email)
 
       if (res?.message && res?.email) {
         this.otp = true;
@@ -45,7 +48,7 @@ loginPatient() {
         // Navigate to OTP screen if message indicates OTP was sent
         if (res.message.includes("OTP has been sent")) {
           console.log("Navigating to OTP screen...");
-         // this.router.navigate(['/otp']);
+         this.router.navigate(['/otp']);
         }
       } else {
         console.error("Unexpected response format:", res);

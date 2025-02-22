@@ -1,5 +1,6 @@
 import { Component, ElementRef, QueryList, ViewChildren, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CommonserviceService } from 'src/app/services/commonservice/commonservice.service';
 import Swal from 'sweetalert2';
 
@@ -10,26 +11,45 @@ import Swal from 'sweetalert2';
 })
 export class VerifyotpComponent implements OnInit {
   @ViewChildren('otpInput') otpElements!: QueryList<ElementRef>;
-  
-  otpform: FormGroup;
+
+  old_email: any | undefined = this.commonservice.getEmail();
+
+  otpform: FormGroup|any
   timeLeft: number = 10;
   interval: any;
+  patient: any;
 
-  constructor(private fb: FormBuilder, private commonservice: CommonserviceService) {
+  constructor(private fb: FormBuilder, 
+    private commonservice: CommonserviceService,
+    private router: Router    
+  ) {
     this.otpform = this.fb.group({
       otp: this.fb.array(new Array(6).fill('').map(() => new FormControl('')))
     });
   }
-
-  // Corrected getter method to return FormControl[]
+  
   get otpControls(): FormControl[] {
     return (this.otpform.get('otp') as FormArray).controls as FormControl[];
   }
 
   ngOnInit() {
+
     this.startCountdown();
     setTimeout(() => this.otpElements.first?.nativeElement.focus(), 0);
+    this.commonservice.getPatientbyEmail(this.commonservice.getEmail()).subscribe({
+      next: (response) => {
+        this.patient = response;
+        console.log('patient 37 ',response)
+      },
+      error: (err) => {
+        console.error("Error fetching patient data:", err);
+      }
+
+    });
+    console.log('updateEmail',this.commonservice.getEmail())
+    console.log('48',this.old_email)
   }
+
 
   onInput(index: number, event: any) {
     const value = event.target.value;
