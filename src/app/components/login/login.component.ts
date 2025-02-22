@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonserviceService } from 'src/app/services/commonservice/commonservice.service';
 import { LoginService } from 'src/app/services/login/login.service';
 
 @Component({
@@ -11,11 +12,13 @@ import { LoginService } from 'src/app/services/login/login.service';
 
 export class LoginComponent {
   postLoginCustomerForm: FormGroup | any;
+  otp:boolean = false
 
   constructor(
     private LoginService: LoginService,
     private fb: FormBuilder,
-    private router: Router 
+    private router: Router ,
+    private commonservice: CommonserviceService
   ){
    
   }
@@ -31,20 +34,29 @@ loginPatient() {
   console.log('form', this.postLoginCustomerForm.value); // Check form value
 
   this.LoginService.loginCustomer(this.postLoginCustomerForm.value).subscribe({
-    next: (res) => {
+    next: (res: any) => {
       console.log("Login success:", res);
-      console.log('token',res.token)
-      this.LoginService.loginPatientToken(res.token)
-      // Redirect to a different page upon successful login
-      this.router.navigate(['/doctorappointmentcomponent']); // Change '/dashboard' to your target route
+
+      if (res?.message && res?.email) {
+        this.otp = true;
+        this.commonservice.setEmail(res.email);
+        console.log('Customer email:', res.email);
+
+        // Navigate to OTP screen if message indicates OTP was sent
+        if (res.message.includes("OTP has been sent")) {
+          console.log("Navigating to OTP screen...");
+         // this.router.navigate(['/otp']);
+        }
+      } else {
+        console.error("Unexpected response format:", res);
+      }
     },
     error: (err) => {
       console.error("Login error:", err);
-    },
-    complete: () => {
-      console.log("Login request completed");
-    },
+    }
   });
+}
+
   
-}}
+}
   

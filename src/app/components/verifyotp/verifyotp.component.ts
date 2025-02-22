@@ -1,5 +1,5 @@
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, ElementRef, QueryList, ViewChildren, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { CommonserviceService } from 'src/app/services/commonservice/commonservice.service';
 import Swal from 'sweetalert2';
 
@@ -8,40 +8,44 @@ import Swal from 'sweetalert2';
   templateUrl: './verifyotp.component.html',
   styleUrls: ['./verifyotp.component.css']
 })
-export class VerifyotpComponent {
+export class VerifyotpComponent implements OnInit {
   @ViewChildren('otpInput') otpElements!: QueryList<ElementRef>;
-  otp: string[] = ['', '', '', '','',''];
+  
+  otpform: FormGroup;
   timeLeft: number = 10;
-  otpInputs = new Array(6).fill(''); 
+  interval: any;
 
-  otpform : FormBuilder|any;
-  constructor(private commonservice:CommonserviceService, private fb: FormBuilder){}
- 
+  constructor(private fb: FormBuilder, private commonservice: CommonserviceService) {
+    this.otpform = this.fb.group({
+      otp: this.fb.array(new Array(6).fill('').map(() => new FormControl('')))
+    });
+  }
 
- 
+  // Corrected getter method to return FormControl[]
+  get otpControls(): FormControl[] {
+    return (this.otpform.get('otp') as FormArray).controls as FormControl[];
+  }
 
   ngOnInit() {
     this.startCountdown();
     setTimeout(() => this.otpElements.first?.nativeElement.focus(), 0);
   }
 
-// to check old mail from previous screen
-old_email: any | undefined = this.commonservice.getEmail();
-
-  //typescript function start//
   onInput(index: number, event: any) {
-    if (event.data && event.data.match(/\d/)) {
-      if (index < this.otp.length - 1) {
-        this.otpElements.get(index + 1)?.nativeElement.focus();
-      }
-    } else {
-      this.otp[index] = '';
+    const value = event.target.value;
+    if (!/^\d$/.test(value)) {
+      this.otpControls[index].setValue('');
+      return;
+    }
+
+    if (index < this.otpControls.length - 1) {
+      this.otpElements.get(index + 1)?.nativeElement.focus();
     }
   }
 
   onKeydown(index: number, event: KeyboardEvent) {
     if (event.key === 'Backspace') {
-      this.otp[index] = '';
+      this.otpControls[index].setValue('');
       if (index > 0) {
         this.otpElements.get(index - 1)?.nativeElement.focus();
       }
@@ -49,11 +53,13 @@ old_email: any | undefined = this.commonservice.getEmail();
   }
 
   startCountdown() {
-    const interval = setInterval(() => {
+    clearInterval(this.interval);
+    this.timeLeft = 10;
+    this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {
-        clearInterval(interval);
+        clearInterval(this.interval);
       }
     }, 1000);
   }
@@ -61,27 +67,23 @@ old_email: any | undefined = this.commonservice.getEmail();
   resendOtp() {
     Swal.fire({
       title: 'OTP Sent!',
-      text: 'A new OTP has been resent to your registered email.',
+      text: 'A new OTP has been sent to your registered email.',
       icon: 'success',
       confirmButtonText: 'OK'
     }).then(() => {
-      this.timeLeft = 10; // Reset timer
       this.startCountdown();
     });
   }
-  
 
   verifyOtp() {
     if (this.isOtpComplete()) {
-      alert('OTP Verified: ' + this.otp.join(''));
+      alert('OTP Verified: ' + this.otpControls.map(control => control.value).join(''));
     } else {
       alert('Please enter complete OTP');
     }
   }
 
   isOtpComplete(): boolean {
-    return this.otp.every((digit) => digit !== '');
+    return this.otpControls.every(control => control.value !== '');
   }
-  //typescript function end//
 }
-

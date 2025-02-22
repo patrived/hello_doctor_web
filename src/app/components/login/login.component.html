@@ -1,4 +1,4 @@
-<div *ngIf="!otp">
+<!--<div *ngIf="!otp">-->
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="card">
         <h2 class="text-center fw-bold text-primary mb-3">Log In</h2>
@@ -11,7 +11,7 @@
                 <input type="password" class="form-control form-control-lg"formControlName="password" placeholder="Password" required name="password">
             </div>
             <div class="d-grid mb-3">
-                <button type="submit" class="btn btn-primary btn-lg" (click)="loginPatient()" routerLink="otp"> Continue</button>
+                <button type="submit" class="btn btn-primary btn-lg" (click)="loginPatient()" > Continue</button>
                
             </div>
 
