@@ -2,6 +2,7 @@ import { Component, ElementRef, QueryList, ViewChildren, OnInit } from '@angular
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonserviceService } from 'src/app/services/commonservice/commonservice.service';
+import { VerifyotpService } from 'src/app/services/verifyotp/verifyotp.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,44 +13,86 @@ import Swal from 'sweetalert2';
 export class VerifyotpComponent implements OnInit {
   @ViewChildren('otpInput') otpElements!: QueryList<ElementRef>;
 
-  old_email: any | undefined = this.commonservice.getEmail();
-
-  otpform: FormGroup|any
+  old_email: string = ''; // Ensures it is always a string
+  otpform: FormGroup;
   timeLeft: number = 10;
   interval: any;
   patient: any;
 
-  constructor(private fb: FormBuilder, 
+  constructor(
+    private fb: FormBuilder,
     private commonservice: CommonserviceService,
-    private router: Router    
+    private router: Router ,
+    private otpservice: VerifyotpService 
   ) {
     this.otpform = this.fb.group({
       otp: this.fb.array(new Array(6).fill('').map(() => new FormControl('')))
     });
   }
-  
+
   get otpControls(): FormControl[] {
     return (this.otpform.get('otp') as FormArray).controls as FormControl[];
   }
 
   ngOnInit() {
+    this.old_email = this.commonservice.getEmail() ?? '';  // Ensures old_email is always a string
 
     this.startCountdown();
     setTimeout(() => this.otpElements.first?.nativeElement.focus(), 0);
-    this.commonservice.getPatientbyEmail(this.commonservice.getEmail()).subscribe({
+
+    this.commonservice.getPatientbyEmail(this.old_email).subscribe({
       next: (response) => {
         this.patient = response;
-        console.log('patient 37 ',response)
+        console.log('Patient Data:', response);
       },
       error: (err) => {
         console.error("Error fetching patient data:", err);
       }
-
     });
-    console.log('updateEmail',this.commonservice.getEmail())
-    console.log('48',this.old_email)
+
+    console.log('Retrieved Email:', this.old_email);
   }
 
+  // Verify button action
+  verifyOtp() {
+    if (this.isOtpComplete()) {
+      const otpValue = this.otpControls.map(control => control.value).join(''); // Combine OTP digits
+      const payload = {
+        email: this.old_email,
+        otp: otpValue
+      };
+
+      this.otpservice.verifyOtp(payload).subscribe({
+        next: () => {
+          Swal.fire({
+            title: 'OTP Verified!',
+            text: 'Your OTP has been successfully verified.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            this.router.navigate(['/admin']); // Redirect after successful verification
+          });
+        },
+        error: (err) => {
+          Swal.fire({
+            title: 'Verification Failed',
+            text: 'Invalid OTP. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'Retry'
+          });
+          console.error("Error verifying OTP:", err);
+        }
+      });
+
+    } else {
+      Swal.fire({
+        title: 'Incomplete OTP',
+        text: 'Please enter the complete OTP.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
+    }
+  }
 
   onInput(index: number, event: any) {
     const value = event.target.value;
@@ -93,14 +136,6 @@ export class VerifyotpComponent implements OnInit {
     }).then(() => {
       this.startCountdown();
     });
-  }
-
-  verifyOtp() {
-    if (this.isOtpComplete()) {
-      alert('OTP Verified: ' + this.otpControls.map(control => control.value).join(''));
-    } else {
-      alert('Please enter complete OTP');
-    }
   }
 
   isOtpComplete(): boolean {
